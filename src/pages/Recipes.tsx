@@ -1,4 +1,5 @@
 // import { useFetch } from '../hooks/useFetch'; // comment useFetch to prevent api call
+import { useAuthContext } from '../hooks/useAuthContext';
 
 type ApiResponse = {
   results: {
@@ -38,6 +39,7 @@ const mockData: ApiResponse = {
 
 
 export const Recipes = () => {
+  const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
   // Temporarily comment the real API call
   /*
   const { error, loading, data } = useFetch<ApiResponse>({
@@ -98,10 +100,32 @@ export const Recipes = () => {
                   <p className="text-gray-600 text-sm leading-relaxed">
                     {recipe.description || "No description available"}
                   </p>
-                  <button className="mt-4 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-full text-sm font-medium transition-colors duration-300">
-                    View Recipe
-                  </button>
+                  <div className="mt-4 flex gap-4">
+                    <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors duration-300">
+                      View Recipe
+                    </button>
+                    {isConnected && (
+                      <button 
+                        onClick={() => {
+                          const isFavorite = favorites.some(fav => fav.id === recipe.id);
+                          if (isFavorite) {
+                            removeFromFavorites(recipe.id);
+                          } else {
+                            addToFavorites(recipe);
+                          }
+                        }}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                          favorites.some(fav => fav.id === recipe.id)
+                            ? 'bg-red-600 hover:bg-red-700 text-white'
+                            : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                        }`}
+                      >
+                        {favorites.some(fav => fav.id === recipe.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                      </button>
+                    )}
+                  </div>
                 </div>
+
               </div>
             ))}
           </div>

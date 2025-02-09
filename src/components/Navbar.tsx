@@ -1,6 +1,16 @@
 import { Link } from 'react-router-dom'
+import { useAuthContext } from '../hooks/useAuthContext'
+import { useNavigate } from 'react-router-dom'
 
 export const Navbar = () => {
+  const { isConnected, logOut } = useAuthContext()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logOut()
+    navigate('/')
+  }
+
   return (
     <nav className="bg-white shadow-md border-b border-amber-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,20 +31,30 @@ export const Navbar = () => {
               Recipes
             </Link>
 
-            <Link 
-              to="/favorites" 
-              className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
-            >
-              Favorites
-            </Link>
+            {isConnected && (
+              <Link 
+                to="/favorites" 
+                className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
+              >
+                Favorites
+              </Link>
+            )}
 
-            <Link 
-              to="/login" 
-              className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
-            >
-              Login
-            </Link>
-
+            {isConnected ? (
+              <button
+                onClick={handleLogout}
+                className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link 
+                to="/login" 
+                className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
+              >
+                Login
+              </Link>
+            )}
 
           </div>
         </div>

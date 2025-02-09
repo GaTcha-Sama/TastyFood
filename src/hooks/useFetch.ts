@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 type FetchProps = {
   url: string;
@@ -21,15 +21,20 @@ export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | undefined>(undefined);
 
+  const memoizedParams = useMemo(() => {
+    return params ? new URLSearchParams(params as Record<string, string>) : '';
+  }, [params]);
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
 
     const fetchData = async () => {
+      if (data && !error) return;
+      
       try {
         setLoading(true);
-        const queryParams = params ? new URLSearchParams(params as Record<string, string>) : '';
-        const fullUrl = `${url}${queryParams ? `?${queryParams}` : ''}`;
+        const fullUrl = `${url}${memoizedParams ? `?${memoizedParams}` : ''}`;
         
         const response = await fetch(fullUrl, {
           ...options,
@@ -66,7 +71,7 @@ export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T
       isMounted = false;
       controller.abort();
     };
-  }, [url, params, options]);
+  }, [url, memoizedParams, options]);
 
   return { data, loading, error };
 }

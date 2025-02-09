@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export type UserData = {
   email: string;
@@ -13,11 +14,13 @@ export const Login = () => {
   const { logIn } = useAuthContext();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    logIn({ email, password });
+    await logIn({ email, password });
+    toast.success('You are connected !');
     navigate('/recipes');
   };
+
 
   return (
     <div className="min-h-screen bg-amber-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
