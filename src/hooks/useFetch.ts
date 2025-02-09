@@ -22,30 +22,50 @@ export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T
   const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const fetchData = async () => {
       try {
+        setLoading(true);
         const queryParams = params ? new URLSearchParams(params as Record<string, string>) : '';
         const fullUrl = `${url}${queryParams ? `?${queryParams}` : ''}`;
         
-        console.log('Fetching URL:', fullUrl);  // Debug URL
-        console.log('Options:', options);       // Debug options
+        const response = await fetch(fullUrl, {
+          ...options,
+          signal: controller.signal
+        });
         
-        const response = await fetch(fullUrl, options);
         if (!response.ok) {
           const errorData = await response.text();
           throw new Error(`API Error: ${response.status} - ${errorData}`);
         }
-        const data = await response.json();
-        setData(data);
+        
+        const jsonData = await response.json();
+        if (isMounted) {
+          setData(jsonData);
+        }
       } catch (error) {
-        console.error('Fetch error:', error); 
-        setError((error as Error).message);
+        if (error instanceof Error && error.name === 'AbortError') {
+          return;
+        }
+        if (isMounted) {
+          console.error('Fetch error:', error);
+          setError((error as Error).message);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   }, [url, params, options]);
 
   return { data, loading, error };

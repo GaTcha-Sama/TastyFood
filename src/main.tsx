@@ -7,6 +7,7 @@ import { Login } from '../src/pages/Login.tsx'
 import { Favorites } from '../src/pages/Favorites.tsx'
 import { Recipes } from '../src/pages/Recipes.tsx'
 import { Error } from '../src/pages/Error.tsx'
+import { ProtectedRoute } from '../src/components/ProtectedRoute.tsx'
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/favorites',
-        element: <Favorites />,
+        element: <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>,
       },      
     ],
   },
