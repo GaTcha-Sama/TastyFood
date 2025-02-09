@@ -71,7 +71,7 @@ export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T
       isMounted = false;
       controller.abort();
     };
-  }, [url, memoizedParams, options]);
+  }, [url, memoizedParams, options, data, error]);
 
   return { data, loading, error };
 }

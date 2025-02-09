@@ -13,7 +13,7 @@ export const AuthProvider = ({children, isSignedIn}:AuthProviderProps) => {
     const [favorites, setFavorites] = useState<Recipe[]>([]);
 
     const logIn = async ({email, password}:UserData) => {
-        if(email === import.meta.env.VITE_USER_EMAIL && password === import.meta.env.VITE_PASSWORD_DATA) {
+        if(email === import.meta.env.VITE_USER_EMAIL && password === import.meta.env.VITE_USER_PASSWORD) {
             setIsConnected(true);
             return true;
         }

@@ -53,8 +53,8 @@ export const Recipes = () => {
     options: {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': import.meta.env.RAPIDAPI_KEY,
-        'x-rapidapi-host': import.meta.env.RAPIDAPI_HOST
+        'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
+        'x-rapidapi-host': import.meta.env.VITE_RAPIDAPI_HOST
       }
 
     }
