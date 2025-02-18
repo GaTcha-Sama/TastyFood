@@ -1,5 +1,6 @@
-// import { useFetch } from '../hooks/useFetch'; // comment useFetch to prevent api call
+import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 type ApiResponse = {
   results: {
@@ -7,41 +8,48 @@ type ApiResponse = {
     name: string;
     description: string | null;
     thumbnail_url: string;
+    url: string;
+    country: string;
+    instructions: string;
+    nutrition: {
+      calories: number;
+      protein: number;
+      fat: number;
+      carbs: number;
+    };
+    total_time_minutes: number;
+    cook_time_minutes: number;
+    prep_time_minutes: number;
+    servings: number;
+    tags: Array<{
+      name: string;
+      display_name: string;
+      type: string;
+    }>;
+    user_ratings: {
+      count_positive: number;
+      score: number;
+      count_negative: number;
+    };
+    sections: Array<{
+      components: Array<{
+        ingredient: {
+          name: string;
+          measurements: Array<{
+            unit: string;
+            quantity: string;
+          }>;
+        };
+      }>;
+    }>;
   }[];
   count: number;
 };
 
-// Add mock data for prevent api call
-const mockData: ApiResponse = {
-  count: 5,
-  results: [
-    {
-      id: 1,
-      name: "Homemade Pizza",
-      description: "Classic margherita pizza with fresh basil and mozzarella",
-      thumbnail_url: "https://images.unsplash.com/photo-1513104890138-7c749659a591"
-    },
-    {
-      id: 2,
-      name: "Pasta Carbonara",
-      description: "Creamy pasta with pancetta and parmesan",
-      thumbnail_url: "https://images.unsplash.com/photo-1546549032-9571cd6b27df"
-    },
-    {
-      id: 3,
-      name: "Caesar Salad",
-      description: "Fresh romaine lettuce with homemade caesar dressing",
-      thumbnail_url: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
-    },
-    // ... you can add more examples
-  ]
-};
-
-
 export const Recipes = () => {
+  const navigate = useNavigate();
   const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
-  // Temporarily comment the real API call
-  /*
+  
   const { error, loading, data } = useFetch<ApiResponse>({
     url: 'https://tasty.p.rapidapi.com/recipes/list',
 
@@ -56,17 +64,8 @@ export const Recipes = () => {
         'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
         'x-rapidapi-host': import.meta.env.VITE_RAPIDAPI_HOST
       }
-
     }
   });
-  */
-
-  // Use mock data instead
-  const data = mockData;
-  const loading = false;
-  const error = null;
-
-
   console.log('API Response:', data);
 
   return (
@@ -97,12 +96,42 @@ export const Recipes = () => {
                   <h2 className="text-xl font-bold text-orange-900 mb-3 font-serif">
                     {recipe.name}
                   </h2>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
                     {recipe.description || "No description available"}
                   </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Temps total:</span>
+                      <span>{recipe.total_time_minutes || '?'} min</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Calories:</span>
+                      <span>{recipe.nutrition?.calories || '?'} kcal</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Note:</span>
+                      <span>{recipe.user_ratings?.score ? `${(recipe.user_ratings.score * 100).toFixed(0)}%` : 'N/A'}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {recipe.tags?.slice(0, 3).map((tag, index) => (
+                      <span 
+                        key={index}
+                        className="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs"
+                      >
+                        {tag.display_name}
+                      </span>
+                    ))}
+                  </div>
+
                   <div className="mt-4 flex gap-4">
-                    <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors duration-300">
-                      View Recipe
+                    <button 
+                      onClick={() => navigate(`/recipes/${recipe.id}`)}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors duration-300"
+                    >
+                      View Recipe Details
                     </button>
                     {isConnected && (
                       <button 

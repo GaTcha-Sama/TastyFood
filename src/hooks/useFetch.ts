@@ -30,8 +30,6 @@ export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T
     const controller = new AbortController();
 
     const fetchData = async () => {
-      if (data && !error) return;
-      
       try {
         setLoading(true);
         const fullUrl = `${url}${memoizedParams ? `?${memoizedParams}` : ''}`;
@@ -71,7 +69,7 @@ export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T
       isMounted = false;
       controller.abort();
     };
-  }, [url, memoizedParams, options, data, error]);
+  }, [url, memoizedParams, options]);
 
   return { data, loading, error };
 }
