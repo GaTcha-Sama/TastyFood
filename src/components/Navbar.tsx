@@ -25,6 +25,12 @@ export const Navbar = () => {
           
           <div className="flex space-x-8">
             <Link 
+              to="/" 
+              className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
+            >
+              Home
+            </Link>
+            <Link 
               to="/recipes" 
               className="text-gray-700 hover:text-amber-600 font-medium transition-colors duration-300"
             >

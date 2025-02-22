@@ -7,6 +7,7 @@ import { Favorites } from "./pages/Favorites";
 import { Error } from "./pages/Error";
 import App from "./App";
 import { RecipesDetails } from "./pages/RecipesDetails";
+import { Home } from "./pages/Home";
 
 export const Router = () => {
     const router = createBrowserRouter([
@@ -14,6 +15,10 @@ export const Router = () => {
             path: '/',
             element: <App />,
             children: [
+                {
+                    path: '/',
+                    element: <Home />,
+                },
                 {
                     path: '/login',
                     element: <Login />,
