@@ -6,6 +6,7 @@ type FetchProps = {
     from?: number;
     size?: number;
     tags?: string;
+    query?: string;
   };
   options?: RequestInit;
 };

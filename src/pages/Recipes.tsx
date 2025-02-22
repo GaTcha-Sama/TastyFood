@@ -1,6 +1,7 @@
 import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 type ApiResponse = {
   results: {
@@ -49,14 +50,15 @@ type ApiResponse = {
 export const Recipes = () => {
   const navigate = useNavigate();
   const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
+  const [searchTerm, setSearchTerm] = useState('');
   
   const { error, loading, data } = useFetch<ApiResponse>({
     url: 'https://tasty.p.rapidapi.com/recipes/list',
-
     params: {
       from: 0,
       size: 20,
-      tags: 'under_30_minutes'
+      tags: 'under_30_minutes',
+      query: searchTerm
     },
     options: {
       method: 'GET',
@@ -66,7 +68,10 @@ export const Recipes = () => {
       }
     }
   });
-  console.log('API Response:', data);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <div className="min-h-screen bg-amber-50">
@@ -74,6 +79,18 @@ export const Recipes = () => {
         <h1 className="text-4xl font-bold text-orange-800 mb-8 text-center font-serif">
           Our Delicious Recipes
         </h1>
+
+        <div className="mb-8">
+          <div className="max-w-xl mx-auto">
+            <input
+              type="text"
+              placeholder="Search by recipe name or ingredient..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full px-4 py-3 rounded-full border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm"
+            />
+          </div>
+        </div>
         
         {data?.results && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
