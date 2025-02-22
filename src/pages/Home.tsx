@@ -1,5 +1,5 @@
 import logo from '../assets/tasty-logo.jpg'
-
+import { Link } from 'react-router-dom'
 export const Home = () => {
   return (
     <section className="flex justify-center items-center">
@@ -8,7 +8,7 @@ export const Home = () => {
         <h1 className="text-4xl font-bold mt-10">Welcome to Tasty</h1>
         <h2 className="text-2xl font-bold mt-10">Your go-to source for recipes</h2>
         <p className="text-gray-600 mt-5">Find and share recipes from around the world</p>
-        <p className="text-gray-600 mt-5">Please login to get started</p>
+        <p className="text-gray-600 mt-5">Please <Link to="/login" className="text-amber-600 hover:text-amber-900">login</Link> to get started</p>
       </div>
     </section>
   )
