@@ -1,50 +1,52 @@
-import { useFetch } from '../hooks/useFetch';
+// import { useFetch } from '../hooks/useFetch';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { ApiResponse } from '../types/recipe';
 
-type ApiResponse = {
-  results: {
-    id: number;
-    name: string;
-    description: string | null;
-    thumbnail_url: string;
-    url: string;
-    country: string;
-    instructions: string;
+// MOCK DATA
+const mockData: ApiResponse = {
+  results: Array(6).fill({
+    id: 1,
+    name: "Ratatouille Provençale",
+    description: "Un plat traditionnel français rempli de légumes d'été mijotés",
+    thumbnail_url: "https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?q=80&w=1000&fit=max",
+    url: "",
+    country: "France",
+    instructions: "Instructions détaillées de la recette...",
     nutrition: {
-      calories: number;
-      protein: number;
-      fat: number;
-      carbs: number;
-    };
-    total_time_minutes: number;
-    cook_time_minutes: number;
-    prep_time_minutes: number;
-    servings: number;
-    tags: Array<{
-      name: string;
-      display_name: string;
-      type: string;
-    }>;
+      calories: 250,
+      protein: 5,
+      fat: 12,
+      carbs: 35
+    },
+    total_time_minutes: 45,
+    cook_time_minutes: 30,
+    prep_time_minutes: 15,
+    servings: 4,
+    tags: [
+      { name: "healthy", display_name: "Healthy", type: "dietary" },
+      { name: "vegetarian", display_name: "Végétarien", type: "dietary" },
+      { name: "french", display_name: "Français", type: "cuisine" }
+    ],
     user_ratings: {
-      count_positive: number;
-      score: number;
-      count_negative: number;
-    };
-    sections: Array<{
-      components: Array<{
+      count_positive: 150,
+      score: 0.92,
+      count_negative: 13
+    },
+    sections: [{
+      components: [{
         ingredient: {
-          name: string;
-          measurements: Array<{
-            unit: string;
-            quantity: string;
-          }>;
-        };
-      }>;
-    }>;
-  }[];
-  count: number;
+          name: "Aubergine",
+          measurements: [{
+            unit: "pièce",
+            quantity: "2"
+          }]
+        }
+      }]
+    }]
+  }),
+  count: 6
 };
 
 export const Recipes = () => {
@@ -52,6 +54,8 @@ export const Recipes = () => {
   const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
   const [searchTerm, setSearchTerm] = useState('');
   
+  // ORIGINAL API CALL
+  /*
   const { error, loading, data } = useFetch<ApiResponse>({
     url: 'https://tasty.p.rapidapi.com/recipes/list',
     params: {
@@ -68,6 +72,12 @@ export const Recipes = () => {
       }
     }
   });
+  */
+
+  // MOCK DATA
+  const [loading] = useState(false);
+  const [error] = useState<string | null>(null);
+  const [data] = useState<ApiResponse>(mockData);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
