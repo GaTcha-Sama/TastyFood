@@ -107,7 +107,7 @@ export const Recipes = () => {
             {data.results.map((recipe) => (
               <div 
                 key={recipe.id} 
-                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-amber-100"
+                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-amber-100 cursor-pointer"
               >
                 {recipe.thumbnail_url && (
                   <div className="relative group">
@@ -120,7 +120,7 @@ export const Recipes = () => {
                   </div>
                 )}
                 <div className="p-6">
-                  <h2 className="text-xl font-bold text-orange-900 mb-3 font-serif">
+                  <h2 className="text-xl font-bold text-orange-900 mb-3 font-serif text-center">
                     {recipe.name}
                   </h2>
                   <p className="text-gray-600 text-sm leading-relaxed mb-4">
@@ -129,7 +129,7 @@ export const Recipes = () => {
                   
                   <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">Temps total:</span>
+                      <span className="font-medium">Total Time:</span>
                       <span>{recipe.total_time_minutes || '?'} min</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -137,26 +137,26 @@ export const Recipes = () => {
                       <span>{recipe.nutrition?.calories || '?'} kcal</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">Note:</span>
+                      <span className="font-medium">Rate:</span>
                       <span>{recipe.user_ratings?.score ? `${(recipe.user_ratings.score * 100).toFixed(0)}%` : 'N/A'}</span>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4 justify-center">
                     {recipe.tags?.slice(0, 3).map((tag, index) => (
                       <span 
                         key={index}
-                        className="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs"
+                        className="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium"
                       >
                         {tag.display_name}
                       </span>
                     ))}
                   </div>
 
-                  <div className="mt-4 flex gap-4">
+                  <div className="mt-4 flex gap-4 justify-center">
                     <button 
                       onClick={() => navigate(`/recipes/${recipe.id}`)}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors duration-300"
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors duration-300 hover:scale-103 cursor-pointer"
                     >
                       View Recipe Details
                     </button>
@@ -170,7 +170,7 @@ export const Recipes = () => {
                             addToFavorites(recipe);
                           }
                         }}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 cursor-pointer ${
                           favorites.some(fav => fav.id === recipe.id)
                             ? 'bg-red-600 hover:bg-red-700 text-white'
                             : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
