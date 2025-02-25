@@ -1,3 +1,20 @@
+/**
+ * RecipesDetails component - Detailed view of a single recipe
+ * A responsive React component that fetches and displays comprehensive recipe information
+ * Features:
+ * - Fetches recipe data from Tasty API using RapidAPI
+ * - Displays loading spinner during data fetch
+ * - Shows error message if recipe not found
+ * - Presents detailed recipe information including:
+ *   - Title and featured image
+ *   - Description and cooking instructions
+ *   - Cooking times and serving information
+ *   - Ingredients list with measurements
+ *   - User ratings and nutritional information
+ * - Responsive layout with grid system for different screen sizes
+ * - Styled with Tailwind CSS for an elegant presentation
+ */
+
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Recipe } from '../types/recipe';

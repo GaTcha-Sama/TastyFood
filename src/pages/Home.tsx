@@ -1,5 +1,17 @@
+/**
+ * Home component - Landing page of the application
+ * A responsive React component that serves as the main entry point
+ * Features:
+ * - Displays the Tasty logo with a rounded border
+ * - Shows welcome headings and descriptive text
+ * - Contains a login link with hover effects
+ * - Uses Tailwind CSS for styling and centered layout
+ * - Implements React Router for navigation
+ */
+
 import logo from '../assets/tasty-logo.jpg'
 import { Link } from 'react-router-dom'
+
 export const Home = () => {
   return (
     <section className="flex justify-center items-center">

@@ -1,3 +1,14 @@
+/**
+ * Favorites component - Displays user's favorite recipes
+ * A responsive React component that shows a grid of saved favorite recipes
+ * Features:
+ * - Displays recipe thumbnails with hover effects
+ * - Shows recipe name and description
+ * - Provides buttons to view recipe details or remove from favorites
+ * - Shows a message when no favorites are present
+ * - Uses Tailwind CSS for styling and responsive design
+ */
+
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 

@@ -1,3 +1,15 @@
+/**
+ * Login component - User authentication page
+ * A responsive React component that handles user login functionality
+ * Features:
+ * - Email and password input fields with validation
+ * - Form submission handling with authentication context
+ * - Success toast notification on successful login
+ * - Automatic navigation to recipes page after login
+ * - Styled with Tailwind CSS for a clean, modern interface
+ * - Uses React Router for navigation and React Hot Toast for notifications
+ */
+
 import { FormEvent, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';

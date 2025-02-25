@@ -1,3 +1,7 @@
+/**
+ * Types for the recipe API response used in the application especially in the Recipes component and RecipesDetails component
+ */
+
 export type Recipe = {
   id: number;
   name: string;

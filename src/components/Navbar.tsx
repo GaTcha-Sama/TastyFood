@@ -1,3 +1,26 @@
+/**
+ * Navbar component - Application navigation header
+ * A responsive React component that provides main navigation functionality
+ * Features:
+ * - Dynamic navigation links based on authentication state:
+ *   - Home, Recipes for all users
+ *   - Favorites, Logout for authenticated users
+ *   - Login, Signup for non-authenticated users
+ * - Responsive design:
+ *   - Full menu on desktop
+ *   - Hamburger menu on mobile with smooth transitions
+ * - Visual feedback:
+ *   - Active link highlighting
+ *   - Hover effects
+ * - Authentication integration:
+ *   - Uses AuthContext for user state
+ *   - Handles logout functionality
+ * - Styled with Tailwind CSS:
+ *   - Consistent theming
+ *   - Smooth animations
+ *   - Mobile-first approach
+ */
+
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useNavigate } from 'react-router-dom'

@@ -1,3 +1,21 @@
+/**
+ * AuthProvider component - Authentication state management wrapper
+ * A React component that implements the AuthContext provider functionality
+ * Features:
+ * - Manages user authentication state:
+ *   - Connection status (isConnected)
+ *   - Favorites list (Recipe[])
+ * - Provides authentication methods:
+ *   - logIn: Validates credentials against environment variables
+ *   - logOut: Clears user session and favorites
+ * - Handles favorites management:
+ *   - addToFavorites: Prevents duplicate entries
+ *   - removeFromFavorites: Filters by recipe ID
+ * - Uses React's useState for state management
+ * - Integrates with react-hot-toast for notifications
+ * - Type-safe implementation with TypeScript
+ */
+
 import { ReactNode, useState } from 'react';
 import { UserData } from "./pages/Login";
 import { AuthContext, Recipe } from './AuthContext';

@@ -1,3 +1,9 @@
+/**
+ * Error component - Displays a 404 error page
+ * A responsive React component that renders a centered error message
+ * with a "404" heading, "Page not found" text, and a "Back to Home" button
+ */
+
 export const Error = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

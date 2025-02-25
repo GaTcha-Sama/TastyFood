@@ -1,8 +1,29 @@
-// import { useFetch } from '../hooks/useFetch';
+/**
+ * Recipes component - Main recipe listing page
+ * A responsive React component that displays a grid of recipe cards
+ * Features:
+ * - Search functionality with debounced input
+ * - Mock data integration (currently using static data instead of API)
+ * - Recipe cards showing:
+ *   - Thumbnail image with hover effects
+ *   - Recipe name and description
+ *   - Cooking time and nutritional info
+ *   - Tags and ratings
+ * - Favorite system integration:
+ *   - Add/remove recipes to favorites (for connected users)
+ *   - Visual feedback for favorite status
+ * - Loading states and error handling
+ * - Responsive grid layout (1-3 columns based on screen size)
+ * - Navigation to detailed recipe view
+ * - Styled with Tailwind CSS for modern UI/UX
+ */
+
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { ApiResponse } from '../types/recipe';
+// import { useFetch } from '../hooks/useFetch';
+// import { useEffect } from 'react';
 
 // MOCK DATA
 const mockData: ApiResponse = {
@@ -53,16 +74,26 @@ export const Recipes = () => {
   const navigate = useNavigate();
   const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
   const [searchTerm, setSearchTerm] = useState('');
-  
+ // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
   // ORIGINAL API CALL
   /*
+
+  useEffect(() => {        ////////////////  useEffect pour le debounce et éviter de faire des requêtes à chaque fois que l'utilisateur tape
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);  //////////////// 500ms de délai avant de faire la requête
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
   const { error, loading, data } = useFetch<ApiResponse>({
     url: 'https://tasty.p.rapidapi.com/recipes/list',
     params: {
       from: 0,
       size: 20,
       tags: 'under_30_minutes',
-      query: searchTerm
+      query: debouncedSearchTerm  //////////////// la requête est faite avec le debouncedSearchTerm
     },
     options: {
       method: 'GET',

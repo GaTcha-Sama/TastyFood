@@ -1,3 +1,29 @@
+/**
+ * useFetch hook - Data fetching abstraction
+ * A custom React hook that handles API requests with built-in state management
+ * Features:
+ * - Generic typing for flexible response handling
+ * - State management:
+ *   - Loading state during requests
+ *   - Error handling with messages
+ *   - Data storage after successful fetch
+ * - URL parameter handling:
+ *   - Support for pagination (from, size)
+ *   - Query string parameters
+ *   - Tag filtering
+ * - Request lifecycle management:
+ *   - Automatic cleanup on unmount
+ *   - Request cancellation
+ *   - Component mount state tracking
+ * - Error handling:
+ *   - HTTP error responses
+ *   - Network errors
+ *   - Aborted requests
+ * - Performance optimization:
+ *   - Memoized URL parameters
+ *   - Controlled re-renders
+ */
+
 import { useState, useEffect, useMemo } from 'react';
 
 type FetchProps = {

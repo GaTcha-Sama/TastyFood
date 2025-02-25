@@ -1,3 +1,25 @@
+/**
+ * Router component - Application routing configuration
+ * A React component that defines the routing structure using React Router
+ * Features:
+ * - Route definitions:
+ *   - Home ('/') - Landing page
+ *   - Login ('/login') - Authentication page
+ *   - Recipes ('/recipes') - Recipe listing
+ *   - Recipe Details ('/recipes/:id') - Individual recipe view
+ *   - Favorites ('/favorites') - Protected route for saved recipes
+ *   - Error ('*') - 404 page for undefined routes
+ * - Protected routes implementation:
+ *   - Wraps sensitive routes with ProtectedRoute component
+ *   - Ensures authentication before access
+ * - Nested routing:
+ *   - Uses App component as root layout
+ *   - Implements outlet pattern for child routes
+ * - Authentication wrapper:
+ *   - Provides auth context to all routes
+ *   - Manages global authentication state
+ */
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { AuthProvider } from "./AuthProvider";
 import { ProtectedRoute } from "./components/ProtectedRoute";
