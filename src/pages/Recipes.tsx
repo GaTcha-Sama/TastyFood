@@ -3,7 +3,7 @@
  * A responsive React component that displays a grid of recipe cards
  * Features:
  * - Search functionality with debounced input
- * - Mock data integration (currently using static data instead of API)
+ * - Mock data integration (currently using static data instead of API) at the end of the file and commented out
  * - Recipe cards showing:
  *   - Thumbnail image with hover effects
  *   - Recipe name and description
@@ -22,98 +22,25 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { ApiResponse } from '../types/recipe';
-// import { useFetch } from '../hooks/useFetch';
-// import { useEffect } from 'react';
-
-// MOCK DATA
-const mockData: ApiResponse = {
-  results: Array(6).fill({
-    id: 1,
-    name: "Ratatouille Provençale",
-    description: "Un plat traditionnel français rempli de légumes d'été mijotés",
-    thumbnail_url: "https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?q=80&w=1000&fit=max",
-    url: "",
-    country: "France",
-    instructions: "Instructions détaillées de la recette...",
-    nutrition: {
-      calories: 250,
-      protein: 5,
-      fat: 12,
-      carbs: 35
-    },
-    total_time_minutes: 45,
-    cook_time_minutes: 30,
-    prep_time_minutes: 15,
-    servings: 4,
-    tags: [
-      { name: "healthy", display_name: "Healthy", type: "dietary" },
-      { name: "vegetarian", display_name: "Végétarien", type: "dietary" },
-      { name: "french", display_name: "Français", type: "cuisine" }
-    ],
-    user_ratings: {
-      count_positive: 150,
-      score: 0.92,
-      count_negative: 13
-    },
-    sections: [{
-      components: [{
-        ingredient: {
-          name: "Aubergine",
-          measurements: [{
-            unit: "pièce",
-            quantity: "2"
-          }]
-        }
-      }]
-    }]
-  }),
-  count: 6
-};
+import { useFetch } from '../hooks/useFetch';
 
 export const Recipes = () => {
   const navigate = useNavigate();
   const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
   const [searchTerm, setSearchTerm] = useState('');
- // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
-  // ORIGINAL API CALL
-  /*
 
-  useEffect(() => {        ////////////////  useEffect pour le debounce et éviter de faire des requêtes à chaque fois que l'utilisateur tape
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);  //////////////// 500ms de délai avant de faire la requête
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  const { error, loading, data } = useFetch<ApiResponse>({
-    url: 'https://tasty.p.rapidapi.com/recipes/list',
-    params: {
-      from: 0,
-      size: 20,
-      tags: 'under_30_minutes',
-      query: debouncedSearchTerm  //////////////// la requête est faite avec le debouncedSearchTerm
-    },
-    options: {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
-        'x-rapidapi-host': import.meta.env.VITE_RAPIDAPI_HOST
-      }
-    }
-  });
-  */
-
-  // MOCK DATA
-  const [loading] = useState(false);
-  const [error] = useState<string | null>(null);
-  const [data] = useState<ApiResponse>(mockData);
+  const { data, loading, error } = useFetch<ApiResponse>(
+    'https://tasty.p.rapidapi.com/recipes/list?from=0&size=20'
+  );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
+  if (loading) return <div>Chargement...</div>;
+  if (error) return <div>{error}</div>;
+  
   return (
     <div className="min-h-screen bg-amber-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -217,21 +144,60 @@ export const Recipes = () => {
             ))}
           </div>
         )}
-
-        {error && (
-          <div className="text-red-600 text-center p-8 bg-red-50 rounded-lg">
-            <p className="font-medium">An error occurred</p>
-            <p className="text-sm mt-2">Please try again later</p>
-          </div>
-        )}
-
-        {loading && (
-          <div className="text-center py-16">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto"></div>
-            <p className="mt-6 text-orange-800 font-medium">Preparing recipes...</p>
-          </div>
-        )}
       </div>
     </div>
   );
 }
+
+
+
+// MOCK DATA
+// const mockData: ApiResponse = {
+//   results: Array(6).fill({
+//     id: 1,
+//     name: "Ratatouille Provençale",
+//     description: "Un plat traditionnel français rempli de légumes d'été mijotés",
+//     thumbnail_url: "https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?q=80&w=1000&fit=max",
+//     url: "",
+//     country: "France",
+//     instructions: "Instructions détaillées de la recette...",
+//     nutrition: {
+//       calories: 250,
+//       protein: 5,
+//       fat: 12,
+//       carbs: 35
+//     },
+//     total_time_minutes: 45,
+//     cook_time_minutes: 30,
+//     prep_time_minutes: 15,
+//     servings: 4,
+//     tags: [
+//       { name: "healthy", display_name: "Healthy", type: "dietary" },
+//       { name: "vegetarian", display_name: "Végétarien", type: "dietary" },
+//       { name: "french", display_name: "Français", type: "cuisine" }
+//     ],
+//     user_ratings: {
+//       count_positive: 150,
+//       score: 0.92,
+//       count_negative: 13
+//     },
+//     sections: [{
+//       components: [{
+//         ingredient: {
+//           name: "Aubergine",
+//           measurements: [{
+//             unit: "pièce",
+//             quantity: "2"
+//           }]
+//         }
+//       }]
+//     }]
+//   }),
+//   count: 6
+// };
+
+// MOCK DATA
+  // const [loading] = useState(false);
+  // const [error] = useState<string | null>(null);
+  // const [data] = useState<ApiResponse>(mockData);
+

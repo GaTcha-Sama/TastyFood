@@ -4,6 +4,7 @@
  * Features:
  * - Generic typing for flexible response handling
  * - State management:
+ *   - Remaining requests
  *   - Loading state during requests
  *   - Error handling with messages
  *   - Data storage after successful fetch
@@ -24,79 +25,54 @@
  *   - Controlled re-renders
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
-type FetchProps = {
-  url: string;
-  params?: {
-    from?: number;
-    size?: number;
-    tags?: string;
-    query?: string;
-  };
-  options?: RequestInit;
-};
+const REQUEST_LIMIT = 5;
+const STORAGE_KEY = 'api_requests';
 
-type FetchResult<T> = {
-  data: T | undefined;
-  loading: boolean;
-  error: string | undefined;
-};
-
-export function useFetch<T>({ url, params, options }: FetchProps): FetchResult<T> {
-  const [data, setData] = useState<T | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | undefined>(undefined);
-
-  const memoizedParams = useMemo(() => {
-    return params ? new URLSearchParams(params as Record<string, string>) : '';
-  }, [params]);
+export function useFetch<T>(url: string) {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
     const fetchData = async () => {
+      // Vérifier le nombre de requêtes
+      const requestCount = Number(localStorage.getItem(STORAGE_KEY) || 0);
+      
+      if (requestCount >= REQUEST_LIMIT) {
+        setError("Limite de 5 requêtes par jour atteinte");
+        setLoading(false);
+        return;
+      }
+
       try {
-        setLoading(true);
-        const fullUrl = `${url}${memoizedParams ? `?${memoizedParams}` : ''}`;
-        
-        const response = await fetch(fullUrl, {
-          ...options,
-          signal: controller.signal
+        const response = await fetch(url, {
+          headers: {
+            'X-RapidAPI-Key': import.meta.env.VITE_RAPIDAPI_KEY,
+            'X-RapidAPI-Host': import.meta.env.VITE_RAPIDAPI_HOST
+          }
         });
-        
+
         if (!response.ok) {
-          const errorData = await response.text();
-          throw new Error(`API Error: ${response.status} - ${errorData}`);
+          throw new Error('Erreur réseau');
         }
+
+        const json = await response.json();
+        setData(json);
         
-        const jsonData = await response.json();
-        if (isMounted) {
-          setData(jsonData);
-        }
+        // Incrémenter le compteur de requêtes
+        localStorage.setItem(STORAGE_KEY, String(requestCount + 1));
+        
       } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-          return;
-        }
-        if (isMounted) {
-          console.error('Fetch error:', error);
-          setError((error as Error).message);
-        }
+        setError(error as string || "Erreur lors de la récupération des données");
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchData();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, [url, memoizedParams, options]);
+  }, [url]);
 
   return { data, loading, error };
 }
