@@ -86,8 +86,15 @@ export const RecipesDetails = () => {
         <div className="md:col-span-2">
           <section className="mb-6 bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-3 text-orange-900">Description</h2>
-            <p>{recipe.description || "Aucune description disponible"}</p>
+            <p>{recipe.description || "No description available"}</p>
           </section>
+
+          <section className="mb-6 bg-white p-6 rounded-lg shadow-sm">
+            <h2 className="text-xl font-semibold mb-3 text-orange-900">Country</h2>
+            <p>{recipe.country || "No country available"}</p>
+          </section>
+
+          
 
           <section className="mb-6 bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-3 text-orange-900">Instructions</h2>
@@ -106,7 +113,7 @@ export const RecipesDetails = () => {
                         <p>{step}</p>
                       </div>
                     ))
-                  : <p>Aucune instruction disponible</p>
+                  : <p>No instructions available</p>
               }
             </div>
           </section>
@@ -119,7 +126,6 @@ export const RecipesDetails = () => {
               <p>⏱️ Time total: {recipe.total_time_minutes || '?'} min</p>
               <p>🍳 Cooking time: {recipe.cook_time_minutes || '?'} min</p>
               <p>⚡ Preparation: {recipe.prep_time_minutes || '?'} min</p>
-              <p>👥 Portions: {recipe.servings || '?'}</p>
               <p>🔥 Calories: {recipe.nutrition?.calories || '?'} kcal</p>
               <p>⭐ Note: {recipe.user_ratings?.score ? `${(recipe.user_ratings.score * 100).toFixed(0)}%` : 'N/A'}</p>
             </div>
@@ -138,6 +144,15 @@ export const RecipesDetails = () => {
                   );
                 })
               )}
+            </ul>
+          </section>
+
+          <section className="mb-6 bg-white p-6 rounded-lg shadow-sm">  
+            <h2 className="text-xl font-semibold mb-3 text-orange-900">Tags</h2>
+            <ul className="space-y-2 flex flex-wrap gap-2">
+              {recipe.tags?.map((tag) => (
+                <li key={tag.name} className="text-xs flex-row">#{tag.name}</li>
+              ))}
             </ul>
           </section>
         </div>

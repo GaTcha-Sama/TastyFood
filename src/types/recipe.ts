@@ -19,7 +19,6 @@ export type Recipe = {
   total_time_minutes: number;
   cook_time_minutes: number;
   prep_time_minutes: number;
-  servings: number;
   tags: Array<{
     name: string;
     display_name: string;

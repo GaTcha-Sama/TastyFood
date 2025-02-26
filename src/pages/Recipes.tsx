@@ -29,7 +29,6 @@ export const Recipes = () => {
   const { isConnected, favorites, addToFavorites, removeFromFavorites } = useAuthContext();
   const [searchTerm, setSearchTerm] = useState('');
 
-
   const { data, loading, error } = useFetch<ApiResponse>(
     'https://tasty.p.rapidapi.com/recipes/list?from=0&size=20'
   );
@@ -38,7 +37,21 @@ export const Recipes = () => {
     setSearchTerm(e.target.value);
   };
 
-  if (loading) return <div>Chargement...</div>;
+  // Ajout du filtrage des recettes
+  const filteredRecipes = data?.results?.filter(recipe => 
+    recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    recipe.tags?.some(tag => 
+      tag.display_name.toLowerCase().includes(searchTerm.toLowerCase())
+    ) ||
+    recipe.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) 
+    return <div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-orange-500"></div>
+      </div>
+    </div>
   if (error) return <div>{error}</div>;
   
   return (
@@ -60,9 +73,9 @@ export const Recipes = () => {
           </div>
         </div>
         
-        {data?.results && (
+        {filteredRecipes && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {data.results.map((recipe) => (
+            {filteredRecipes.map((recipe) => (
               <div 
                 key={recipe.id} 
                 className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-amber-100 cursor-pointer"
