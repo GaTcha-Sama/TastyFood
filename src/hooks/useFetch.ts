@@ -37,11 +37,10 @@ export function useFetch<T>(url: string) {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Vérifier le nombre de requêtes
       const requestCount = Number(localStorage.getItem(STORAGE_KEY) || 0);
       
       if (requestCount >= REQUEST_LIMIT) {
-        setError("Limite de 5 requêtes par jour atteinte");
+        setError(`Request limit reached: ${REQUEST_LIMIT} requests per day`);
         setLoading(false);
         return;
       }
@@ -55,17 +54,16 @@ export function useFetch<T>(url: string) {
         });
 
         if (!response.ok) {
-          throw new Error('Erreur réseau');
+          throw new Error('Network error');
         }
 
         const json = await response.json();
         setData(json);
         
-        // Incrémenter le compteur de requêtes
         localStorage.setItem(STORAGE_KEY, String(requestCount + 1));
         
       } catch (error) {
-        setError(error as string || "Erreur lors de la récupération des données");
+        setError(error as string || "Error while fetching data");
       } finally {
         setLoading(false);
       }

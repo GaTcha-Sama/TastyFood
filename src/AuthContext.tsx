@@ -27,6 +27,7 @@ export type Recipe = {
 }
 
 export type User = {
+    user: UserData;
     isConnected: boolean;
     favorites: Recipe[];
     logIn: (data: UserData) => void;

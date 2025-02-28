@@ -58,7 +58,9 @@ export const Favorites = () => {
                       View Recipe Details
                     </button>
                     <button 
-                      onClick={() => removeFromFavorites(recipe.id)}
+                      onClick={() => {
+                        removeFromFavorites(recipe.id);
+                      }}
                       className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full text-sm font-medium transition-colors duration-300"
                     >
                       Remove from Favorites

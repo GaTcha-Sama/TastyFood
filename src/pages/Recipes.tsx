@@ -37,7 +37,6 @@ export const Recipes = () => {
     setSearchTerm(e.target.value);
   };
 
-  // Ajout du filtrage des recettes
   const filteredRecipes = data?.results?.filter(recipe => 
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     recipe.tags?.some(tag => 

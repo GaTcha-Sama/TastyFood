@@ -28,7 +28,10 @@ type AuthProviderProps = {
 
 export const AuthProvider = ({children, isSignedIn}:AuthProviderProps) => {
     const [isConnected, setIsConnected] = useState(isSignedIn || false);
-    const [favorites, setFavorites] = useState<Recipe[]>([]);
+    const [favorites, setFavorites] = useState<Recipe[]>(() => {
+        const savedFavorites = localStorage.getItem('favorites');
+        return savedFavorites ? JSON.parse(savedFavorites) : [];
+    });
 
     const logIn = async ({email, password}:UserData) => {
         if(email === import.meta.env.VITE_USER_EMAIL && password === import.meta.env.VITE_USER_PASSWORD) {
@@ -40,25 +43,31 @@ export const AuthProvider = ({children, isSignedIn}:AuthProviderProps) => {
 
     const logOut = () => {
         setIsConnected(false);
-        setFavorites([]);
         toast.success('You are disconnected !');
     }
 
     const addToFavorites = (recipe: Recipe) => {
         setFavorites(prev => {
             if (!prev.some(fav => fav.id === recipe.id)) {
-                return [...prev, recipe];
+                const newFavorites = [...prev, recipe];
+                localStorage.setItem('favorites', JSON.stringify(newFavorites));
+                return newFavorites;
             }
             return prev;
         });
     }
 
     const removeFromFavorites = (recipeId: number) => {
-        setFavorites(prev => prev.filter(recipe => recipe.id !== recipeId));
+        setFavorites(prev => {
+            const newFavorites = prev.filter(recipe => recipe.id !== recipeId);
+            localStorage.setItem('favorites', JSON.stringify(newFavorites));
+            return newFavorites;
+        });
     }
 
     return (
         <AuthContext.Provider value={{ 
+            user: {email: '', password: ''},
             isConnected, 
             favorites, 
             logIn, 

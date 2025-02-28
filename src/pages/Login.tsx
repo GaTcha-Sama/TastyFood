@@ -28,9 +28,13 @@ export const Login = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await logIn({ email, password });
-    toast.success('You are connected !');
-    navigate('/recipes');
+    try {
+      await logIn({ email, password });
+      toast.success('You are connected !');
+      navigate('/recipes');
+    } catch (error) {
+      toast.error(error as string);
+    }
   };
 
 
