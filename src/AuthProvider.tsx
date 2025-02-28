@@ -7,7 +7,7 @@
  *   - Favorites list (Recipe[])
  * - Provides authentication methods:
  *   - logIn: Validates credentials against environment variables
- *   - logOut: Clears user session and favorites
+ *   - logOut: Clears user session but keeps favorites in localStorage
  * - Handles favorites management:
  *   - addToFavorites: Prevents duplicate entries
  *   - removeFromFavorites: Filters by recipe ID
