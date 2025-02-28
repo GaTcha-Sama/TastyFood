@@ -30,7 +30,7 @@ export const Recipes = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { data, loading, error } = useFetch<ApiResponse>(
-    'https://tasty.p.rapidapi.com/recipes/list?from=0&size=20'
+    'https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&tags=under_30_minutes'
   );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ export const Recipes = () => {
               placeholder="Search by recipe name or ingredient..."
               value={searchTerm}
               onChange={handleSearch}
-              className="w-full px-4 py-3 rounded-full border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm"
+              className="w-full px-4 py-3 rounded-full bg-white border border-amber-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm"
             />
           </div>
         </div>
