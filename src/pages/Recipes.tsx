@@ -3,7 +3,8 @@
  * A responsive React component that displays a grid of recipe cards
  * Features:
  * - Search functionality with debounced input
- * - Mock data integration (currently using static data instead of API) at the end of the file and commented out
+ * - Mock data integration at the end of the file and commented out 
+    (it was used to test the app before the API integration)
  * - Recipe cards showing:
  *   - Thumbnail image with hover effects
  *   - Recipe name and description

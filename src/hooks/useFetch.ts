@@ -27,7 +27,7 @@
 
 import { useState, useEffect } from 'react';
 
-const REQUEST_LIMIT = 20;
+const REQUEST_LIMIT = 100;
 const STORAGE_KEY = 'api_requests';
 
 export function useFetch<T>(url: string) {
